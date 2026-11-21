@@ -126,11 +126,34 @@ function scanSocial(headTags) {
   return { score, grade: grade(score), checks };
 }
 
+import { rateLimit, clientIp } from "./_ratelimit.js";
+
+// Anonymous limits. Tune via env without a redeploy.
+const RL_LIMIT = parseInt(process.env.SCAN_RATE_LIMIT || "12", 10);   // scans
+const RL_WINDOW = parseInt(process.env.SCAN_RATE_WINDOW || "600", 10); // seconds (10 min)
+
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   const parsed = clampUrl(req.query?.url || (req.url && new URL(req.url, "http://x").searchParams.get("url")));
   if (!parsed) { res.status(400).json({ error: "Enter a valid public website URL." }); return; }
   const url = parsed;
+
+  // Rate limit by client IP (anonymous). Accounts will raise/replace this key later.
+  const ip = clientIp(req);
+  const rl = await rateLimit(`scan:${ip}`, { limit: RL_LIMIT, windowSec: RL_WINDOW });
+  res.setHeader("X-RateLimit-Limit", String(rl.limit));
+  res.setHeader("X-RateLimit-Remaining", String(rl.remaining));
+  res.setHeader("X-RateLimit-Reset", String(rl.resetSec));
+  if (!rl.ok) {
+    const mins = Math.max(1, Math.ceil(rl.resetSec / 60));
+    res.setHeader("Retry-After", String(rl.resetSec));
+    res.status(429).json({
+      error: `Rate limit reached — ${rl.limit} scans per ${Math.round(RL_WINDOW / 60)} min. Try again in ~${mins} min, or create a free account for more.`,
+      rateLimited: true,
+      resetSec: rl.resetSec,
+    });
+    return;
+  }
   const t0 = Date.now();
   let resp, html = "", headers;
   try {

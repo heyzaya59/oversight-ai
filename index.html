@@ -423,8 +423,14 @@ async function runScan(){
     try{
       const r = await fetch('/api/scan?url='+encodeURIComponent(raw.trim()));
       data = await r.json();
+      // The API responded (rate limit, bad URL, unreachable target) — surface its real
+      // message. Only a missing backend (static host) should trigger the sample fallback.
+      if(r.status === 429 || r.status === 400 || r.status === 502){
+        throw Object.assign(new Error(data.error || 'Scan failed'), {real:true});
+      }
       if(!r.ok || data.error){ throw new Error(data.error || 'Scan failed'); }
     }catch(apiErr){
+      if(apiErr.real){ throw apiErr; } // real API error → show it, don't sample
       // Static-host fallback (e.g. GitHub Pages has no serverless backend):
       // show a representative preview so the experience still demonstrates value.
       const host = raw.trim().replace(/^https?:\/\//,'').replace(/\/.*$/,'');

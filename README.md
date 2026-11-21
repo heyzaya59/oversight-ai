@@ -56,6 +56,19 @@ GET /api/scan?url=example.com
 → { overall, overallGrade, agents: { "AEO / SEO": {score, grade, checks[]}, ... } }
 ```
 
+## Rate limiting
+
+The scanner is rate-limited per client IP so a public free tool can't be hammered. It works with **zero setup** (in-memory fallback) and upgrades to durable, cross-instance limiting when Upstash Redis env vars are present:
+
+| Env var | Default | Purpose |
+|---------|---------|---------|
+| `SCAN_RATE_LIMIT` | `12` | scans allowed per window, per IP |
+| `SCAN_RATE_WINDOW` | `600` | window length in seconds (10 min) |
+| `UPSTASH_REDIS_REST_URL` | — | enables durable Redis-backed limiting |
+| `UPSTASH_REDIS_REST_TOKEN` | — | Upstash auth token |
+
+Over-limit requests get `429` with `Retry-After` and a friendly "create a free account for more" message. Logged-in accounts will key the limiter by user id with higher caps.
+
 ## Self-host vs. hosted
 
 - **Self-host** — free, forever. Clone it, deploy it, use it on your own sites. That's the point of open source.
