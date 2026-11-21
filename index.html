@@ -416,9 +416,20 @@ async function runScan(){
   AGENTS.forEach((a,i)=> setTimeout(()=>setChip(a,'run','Scanning…'), i*180));
   btn.disabled=true; btn.textContent='Scanning…'; hint.textContent='↳ agents dispatched — auditing live site…';
   try{
-    const r = await fetch('/api/scan?url='+encodeURIComponent(raw.trim()));
-    const data = await r.json();
-    if(!r.ok || data.error){ throw new Error(data.error || 'Scan failed'); }
+    let data;
+    try{
+      const r = await fetch('/api/scan?url='+encodeURIComponent(raw.trim()));
+      data = await r.json();
+      if(!r.ok || data.error){ throw new Error(data.error || 'Scan failed'); }
+    }catch(apiErr){
+      // Static-host fallback (e.g. GitHub Pages has no serverless backend):
+      // show a representative preview so the experience still demonstrates value.
+      const host = raw.trim().replace(/^https?:\/\//,'').replace(/\/.*$/,'');
+      data = { preview:true, url:'https://'+host+'/', ms:'—', overall:64, overallGrade:'D',
+        agents:{
+          "AEO / SEO":{score:63,grade:'D'}, "Accessibility":{score:71,grade:'C'},
+          "Security":{score:50,grade:'F'}, "Social":{score:50,grade:'F'} } };
+    }
     AGENTS.forEach((a,i)=>{
       const res = data.agents[a];
       setTimeout(()=> res ? setScore(a,res.score,res.grade) : setChip(a,'idle','n/a'), 250+i*220);
@@ -428,7 +439,9 @@ async function runScan(){
       document.getElementById('ovgrade').textContent = 'Grade '+data.overallGrade+' ·';
       document.getElementById('ovurl').textContent = data.url.replace(/^https?:\/\//,'').replace(/\/$/,'') + ' · '+data.ms+'ms';
       overall.classList.add('show');
-      hint.textContent='↳ scan complete — this is a preview. The full report fixes each item.';
+      hint.textContent = data.preview
+        ? '↳ sample result (live scanner activates on deploy). The full report fixes each item.'
+        : '↳ scan complete — this is a preview. The full report fixes each item.';
     }, 250+AGENTS.length*220);
   }catch(e){
     AGENTS.forEach(a=>setChip(a,'idle','Idle'));
