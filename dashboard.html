@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dashboard · Oversight</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#F7F5F0;--paper2:#EFEBE1;--ink:#16130F;--ink2:#2A251E;--muted:#6B6559;--line:#E3DECF;--line2:#D6CFBD;--amber:#E8A317;--amber-d:#C8860A;--teal:#0E7C6B;--teal-d:#0A5F52;--ff-disp:"Space Grotesk",sans-serif;--ff-body:"Inter",sans-serif;--ff-mono:"Space Mono",monospace}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--ff-body);line-height:1.6}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:900px;margin:0 auto;padding:0 22px}
+  header{border-bottom:1px solid var(--line);background:rgba(247,245,240,.85);backdrop-filter:blur(10px);position:sticky;top:0;z-index:10}
+  .nav{display:flex;align-items:center;gap:16px;height:62px}
+  .brand{display:flex;align-items:center;gap:9px;font-family:var(--ff-disp);font-weight:700;font-size:19px}
+  .brand .dot{width:11px;height:11px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 4px rgba(232,163,23,.18)}
+  .nav .right{margin-left:auto;display:flex;align-items:center;gap:14px;font-size:14px}
+  .email{font-family:var(--ff-mono);font-size:12.5px;color:var(--muted)}
+  .btn{font-family:var(--ff-disp);font-weight:600;font-size:14px;padding:9px 16px;border-radius:9px;border:1.5px solid var(--line2);background:#fff;cursor:pointer;transition:transform .12s,border-color .15s}
+  .btn:hover{transform:translateY(-1px);border-color:var(--ink)}
+  .btn.amber{background:var(--amber);border-color:var(--amber);color:var(--ink)}
+  h1{font-family:var(--ff-disp);font-weight:600;font-size:28px;margin:34px 0 4px}
+  .sub{color:var(--muted);margin-bottom:28px}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:22px}
+  .panel h2{font-family:var(--ff-disp);font-weight:600;font-size:17px;margin-bottom:4px}
+  .panel .ph{color:var(--muted);font-size:13px;margin-bottom:16px}
+  .addrow{display:flex;gap:9px;margin-bottom:16px}
+  .addrow input{flex:1;padding:11px 13px;border:1.5px solid var(--line2);border-radius:10px;font-family:var(--ff-mono);font-size:14px;background:var(--paper);outline:none}
+  .addrow input:focus{border-color:var(--amber);background:#fff}
+  .item{display:flex;align-items:center;gap:12px;padding:12px 4px;border-top:1px solid var(--line)}
+  .item:first-of-type{border-top:0}
+  .item .u{font-family:var(--ff-mono);font-size:13.5px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pill{font-family:var(--ff-disp);font-weight:700;font-size:13px;min-width:30px;text-align:center;padding:3px 8px;border-radius:7px}
+  .g-A{background:#e7f6ec;color:var(--teal-d)}.g-B{background:#eaf4ec;color:var(--teal-d)}
+  .g-C{background:#fdf3e2;color:var(--amber-d)}.g-D{background:#fbeede;color:#b5701a}.g-F{background:#fcefec;color:#b23b2e}
+  .time{font-family:var(--ff-mono);font-size:11.5px;color:var(--muted)}
+  .x{color:var(--muted);cursor:pointer;font-size:18px;padding:2px 6px;border-radius:6px}
+  .x:hover{background:var(--paper2);color:#b23b2e}
+  .empty{color:var(--muted);font-size:14px;padding:10px 4px}
+  .scan-link{font-family:var(--ff-disp);font-weight:600;font-size:13px;color:var(--amber-d)}
+  @media(max-width:560px){.email{display:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav">
+  <a class="brand" href="/"><span class="dot"></span>Oversight</a>
+  <div class="right">
+    <span class="email" id="email"></span>
+    <a class="btn amber" href="/#scan">New scan</a>
+    <button class="btn" onclick="OVS.signOut()">Sign out</button>
+  </div>
+</div></header>
+
+<main class="wrap">
+  <h1>Your dashboard</h1>
+  <p class="sub" id="welcome">Loading…</p>
+
+  <div class="panel">
+    <h2>Monitored sites</h2>
+    <p class="ph">Save a site to track its health over time. We'll re-scan and alert you if a grade drops.</p>
+    <div class="addrow">
+      <input id="newsite" type="url" placeholder="yourwebsite.com" />
+      <button class="btn amber" id="addbtn" onclick="addSite()">Add site</button>
+    </div>
+    <div id="sites"><div class="empty">No saved sites yet.</div></div>
+  </div>
+
+  <div class="panel">
+    <h2>Recent scans</h2>
+    <p class="ph">Every scan you've run, with its overall grade.</p>
+    <div id="history"><div class="empty">No scans yet — <a class="scan-link" href="/#scan">run your first →</a></div></div>
+  </div>
+</main>
+
+<script src="/auth.js"></script>
+<script>
+  let USER=null;
+  const grade = g => `<span class="pill g-${(g||'F')}">${g||'–'}</span>`;
+  const when = iso => { try{const d=new Date(iso);return d.toLocaleDateString(undefined,{month:'short',day:'numeric'})+' '+d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});}catch{return'';} };
+  const host = u => (u||'').replace(/^https?:\/\//,'').replace(/\/$/,'');
+
+  async function boot(){
+    USER = await OVS.me();
+    if(!USER){ location.href='/login.html'; return; }
+    document.getElementById('email').textContent = USER.email||'';
+    document.getElementById('welcome').textContent = 'Signed in as '+(USER.email||'your account')+'.';
+    loadSites(); loadHistory();
+  }
+  async function loadSites(){
+    try{
+      const r = await fetch('/api/sites',{headers:OVS.authHeader()});
+      const d = await r.json(); const el=document.getElementById('sites');
+      if(!d.sites || !d.sites.length){ el.innerHTML='<div class="empty">No saved sites yet.</div>'; return; }
+      el.innerHTML = d.sites.map(s=>`<div class="item"><span class="u">${host(s.url)}</span>
+        <a class="scan-link" href="/#scan" title="Scan now">scan</a>
+        <span class="x" title="Remove" onclick="delSite('${s.id}')">×</span></div>`).join('');
+    }catch{}
+  }
+  async function loadHistory(){
+    try{
+      const r = await fetch('/api/history',{headers:OVS.authHeader()});
+      const d = await r.json(); const el=document.getElementById('history');
+      if(!d.scans || !d.scans.length){ el.innerHTML='<div class="empty">No scans yet — <a class="scan-link" href="/#scan">run your first →</a></div>'; return; }
+      el.innerHTML = d.scans.map(s=>`<div class="item">${grade(s.grade)}<span class="u">${host(s.url)}</span>
+        <span class="time">${s.overall ?? '–'}/100 · ${when(s.created_at)}</span></div>`).join('');
+    }catch{}
+  }
+  async function addSite(){
+    const i=document.getElementById('newsite'); const url=i.value.trim(); if(!url) return;
+    const b=document.getElementById('addbtn'); b.disabled=true; b.textContent='Adding…';
+    try{
+      const r=await fetch('/api/sites',{method:'POST',headers:{'Content-Type':'application/json',...OVS.authHeader()},body:JSON.stringify({url})});
+      if(r.ok){ i.value=''; loadSites(); }
+    }finally{ b.disabled=false; b.textContent='Add site'; }
+  }
+  async function delSite(id){
+    await fetch('/api/sites?id='+encodeURIComponent(id),{method:'DELETE',headers:OVS.authHeader()});
+    loadSites();
+  }
+  document.getElementById('newsite').addEventListener('keydown',e=>{if(e.key==='Enter')addSite();});
+  boot();
+</script>
+</body>
+</html>

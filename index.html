@@ -98,6 +98,21 @@
   .overall .num{font-family:var(--ff-disp);font-weight:700;font-size:34px;line-height:1}
   .overall .meta{font-size:13px;color:#9b9384}
   .err{color:#ff9b8a;font-family:var(--ff-mono);font-size:12.5px;margin-top:10px;display:none}
+  /* gated detailed report */
+  .report{margin-top:12px;display:none;max-height:340px;overflow-y:auto}
+  .report.show{display:block}
+  .report::-webkit-scrollbar{width:6px}.report::-webkit-scrollbar-thumb{background:#3a332a;border-radius:3px}
+  .rcat{margin-top:12px}
+  .rcat h4{font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#8e8676;margin-bottom:4px}
+  .rchk{display:flex;gap:9px;align-items:baseline;font-size:12.3px;padding:5px 0;border-top:1px solid #272219;color:#c4bdaf;line-height:1.45}
+  .rchk .m{font-weight:700;font-family:var(--ff-mono);font-size:11px;flex:0 0 auto}
+  .rchk .m.p{color:#4fd1b8}.rchk .m.f{color:var(--amber)}
+  .rchk .t b{color:#eee;font-weight:600}
+  .lock{margin-top:12px;display:none;text-align:center;padding:20px 16px;background:linear-gradient(180deg,#1d1812,#231d16);border:1px dashed #3a332a;border-radius:12px}
+  .lock.show{display:block}
+  .lock h4{font-family:var(--ff-disp);font-weight:600;font-size:15.5px;color:#fff;margin-bottom:5px}
+  .lock p{font-size:12.5px;color:#9b9384;margin-bottom:13px}
+  .lock .cnt{color:var(--amber)}
 
   /* ---- section scaffolding ---- */
   section{padding:84px 0}
@@ -205,7 +220,7 @@
       <a href="#agencies">For agencies</a>
     </nav>
     <div class="nav-cta">
-      <a class="btn ghost" href="#scan">Free scan</a>
+      <a class="btn ghost" id="authlink" href="/login.html">Log in</a>
       <a class="btn primary" href="#pricing">Get started</a>
     </div>
   </div>
@@ -250,6 +265,12 @@
       <div class="overall" id="overall">
         <div class="num" id="ovnum">–</div>
         <div class="meta"><b id="ovgrade"></b> overall health<br><span id="ovurl"></span></div>
+      </div>
+      <div class="report" id="report"></div>
+      <div class="lock" id="lock">
+        <h4>🔒 <span class="cnt" id="lockcnt">Findings</span> ready to unlock</h4>
+        <p>See every issue and exactly how to fix it — free account, no card.</p>
+        <a class="btn amber" href="/login.html" style="font-size:13px">Create free account →</a>
       </div>
     </div>
   </div>
@@ -390,6 +411,7 @@
   </div>
 </footer>
 
+<script src="/auth.js"></script>
 <script>
 const RAIL = document.getElementById('rail');
 function setChip(agent, cls, text){
@@ -415,13 +437,16 @@ async function runScan(){
   const btn = document.getElementById('scanbtn');
   const overall = document.getElementById('overall');
   err.style.display='none'; overall.classList.remove('show');
+  document.getElementById('report').classList.remove('show');
+  document.getElementById('lock').classList.remove('show');
   if(!raw || !raw.trim()){ err.textContent='↳ enter a website URL first'; err.style.display='block'; return; }
   AGENTS.forEach((a,i)=> setTimeout(()=>setChip(a,'run','Scanning…'), i*180));
   btn.disabled=true; btn.textContent='Scanning…'; hint.textContent='↳ agents dispatched — auditing live site…';
   try{
     let data;
     try{
-      const r = await fetch('/api/scan?url='+encodeURIComponent(raw.trim()));
+      const hdrs = (window.OVS ? OVS.authHeader() : {});
+      const r = await fetch('/api/scan?url='+encodeURIComponent(raw.trim()), { headers: hdrs });
       data = await r.json();
       // The API responded (rate limit, bad URL, unreachable target) — surface its real
       // message. Only a missing backend (static host) should trigger the sample fallback.
@@ -448,9 +473,10 @@ async function runScan(){
       document.getElementById('ovgrade').textContent = 'Grade '+data.overallGrade+' ·';
       document.getElementById('ovurl').textContent = data.url.replace(/^https?:\/\//,'').replace(/\/$/,'') + ' · '+data.ms+'ms';
       overall.classList.add('show');
+      renderReport(data);
       hint.textContent = data.preview
-        ? '↳ sample result (live scanner activates on deploy). The full report fixes each item.'
-        : '↳ scan complete — this is a preview. The full report fixes each item.';
+        ? '↳ sample result (live scanner activates on deploy). Sign in for the full report.'
+        : (data.authed ? '↳ scan complete — full findings below.' : '↳ scan complete — unlock every fix below.');
     }, 250+AGENTS.length*220);
   }catch(e){
     AGENTS.forEach(a=>setChip(a,'idle','Idle'));
@@ -461,6 +487,36 @@ async function runScan(){
   }
 }
 document.getElementById('scanbar-input').addEventListener('keydown',e=>{ if(e.key==='Enter') runScan(); });
+
+// Render the gated detailed report: full findings for members, unlock CTA for anon.
+function renderReport(data){
+  const report = document.getElementById('report');
+  const lock = document.getElementById('lock');
+  const authedWithChecks = data.authed && Object.values(data.agents||{}).some(a=>a.checks);
+  if(authedWithChecks){
+    let html='';
+    for(const [name,a] of Object.entries(data.agents)){
+      if(!a.checks) continue;
+      html += `<div class="rcat"><h4>${name} · ${a.score}/100</h4>`;
+      for(const c of a.checks){
+        html += `<div class="rchk"><span class="m ${c[1]?'p':'f'}">${c[1]?'PASS':'FIX'}</span><span class="t"><b>${c[0]}</b> — ${c[2]}</span></div>`;
+      }
+      html += `</div>`;
+    }
+    report.innerHTML = html; report.classList.add('show');
+  } else {
+    const n = data.totalFindings;
+    document.getElementById('lockcnt').textContent = (n && !data.preview) ? (n+' finding'+(n>1?'s':'')) : 'Full findings';
+    lock.classList.add('show');
+  }
+}
+
+// Reflect auth state in the nav.
+if(window.OVS){
+  OVS.me().then(u=>{
+    if(u){ const a=document.getElementById('authlink'); a.textContent='Dashboard'; a.href='/dashboard.html'; }
+  }).catch(()=>{});
+}
 </script>
 </body>
 </html>

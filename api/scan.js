@@ -127,10 +127,12 @@ function scanSocial(headTags) {
 }
 
 import { rateLimit, clientIp } from "./_ratelimit.js";
+import { getUser, recordScan } from "./_auth.js";
 
-// Anonymous limits. Tune via env without a redeploy.
-const RL_LIMIT = parseInt(process.env.SCAN_RATE_LIMIT || "12", 10);   // scans
-const RL_WINDOW = parseInt(process.env.SCAN_RATE_WINDOW || "600", 10); // seconds (10 min)
+// Limits. Tune via env without a redeploy. Accounts get a higher cap than anon.
+const RL_WINDOW = parseInt(process.env.SCAN_RATE_WINDOW || "600", 10);      // seconds (10 min)
+const RL_ANON = parseInt(process.env.SCAN_RATE_LIMIT || "12", 10);          // anon scans/window
+const RL_USER = parseInt(process.env.SCAN_RATE_LIMIT_USER || "60", 10);     // account scans/window
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -138,9 +140,12 @@ export default async function handler(req, res) {
   if (!parsed) { res.status(400).json({ error: "Enter a valid public website URL." }); return; }
   const url = parsed;
 
-  // Rate limit by client IP (anonymous). Accounts will raise/replace this key later.
+  // Who's calling? Logged-in users get the full report + higher limits; anon gets scores only.
+  const user = await getUser(req);
   const ip = clientIp(req);
-  const rl = await rateLimit(`scan:${ip}`, { limit: RL_LIMIT, windowSec: RL_WINDOW });
+  const rlKey = user ? `scan:u:${user.id}` : `scan:ip:${ip}`;
+  const rlCap = user ? RL_USER : RL_ANON;
+  const rl = await rateLimit(rlKey, { limit: rlCap, windowSec: RL_WINDOW });
   res.setHeader("X-RateLimit-Limit", String(rl.limit));
   res.setHeader("X-RateLimit-Remaining", String(rl.remaining));
   res.setHeader("X-RateLimit-Reset", String(rl.resetSec));
@@ -148,7 +153,9 @@ export default async function handler(req, res) {
     const mins = Math.max(1, Math.ceil(rl.resetSec / 60));
     res.setHeader("Retry-After", String(rl.resetSec));
     res.status(429).json({
-      error: `Rate limit reached — ${rl.limit} scans per ${Math.round(RL_WINDOW / 60)} min. Try again in ~${mins} min, or create a free account for more.`,
+      error: user
+        ? `Rate limit reached — ${rl.limit} scans per ${Math.round(RL_WINDOW / 60)} min. Try again in ~${mins} min.`
+        : `Rate limit reached — ${rl.limit} scans per ${Math.round(RL_WINDOW / 60)} min. Try again in ~${mins} min, or create a free account for more.`,
       rateLimited: true,
       resetSec: rl.resetSec,
     });
@@ -178,6 +185,25 @@ export default async function handler(req, res) {
   const security = scanSecurity(url, headers);
   const social = scanSocial(headTags);
   const overall = Math.round((seo.score + a11y.score + security.score + social.score) / 4);
+  const agentsFull = { "AEO / SEO": seo, "Accessibility": a11y, "Security": security, "Social": social };
+
+  // Log every scan (fire-and-forget; anon scans carry no user_id).
+  recordScan({
+    user_id: user?.id || null,
+    url: url.href,
+    overall,
+    grade: grade(overall),
+    agents_json: agentsFull,
+  });
+
+  // Gate the detail: logged-in users get the full findings; anonymous gets scores only.
+  let agents = agentsFull;
+  if (!user) {
+    agents = {};
+    for (const [k, v] of Object.entries(agentsFull)) {
+      agents[k] = { score: v.score, grade: v.grade };
+    }
+  }
 
   res.status(200).json({
     url: url.href,
@@ -185,11 +211,9 @@ export default async function handler(req, res) {
     ms: Date.now() - t0,
     overall,
     overallGrade: grade(overall),
-    agents: {
-      "AEO / SEO": seo,
-      "Accessibility": a11y,
-      "Security": security,
-      "Social": social,
-    },
+    authed: !!user,
+    locked: !user,               // UI shows the "create free account" unlock on detail
+    totalFindings: Object.values(agentsFull).reduce((n, a) => n + a.checks.filter(c => !c[1]).length, 0),
+    agents,
   });
 }

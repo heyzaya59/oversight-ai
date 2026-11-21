@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sign in · Oversight</title>
+<meta name="description" content="Sign in to Oversight to unlock full site reports, scan history and monitoring." />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#F7F5F0;--ink:#16130F;--ink2:#2A251E;--muted:#6B6559;--line:#E3DECF;--line2:#D6CFBD;--amber:#E8A317;--amber-d:#C8860A;--teal:#0E7C6B;--ff-disp:"Space Grotesk",sans-serif;--ff-body:"Inter",sans-serif;--ff-mono:"Space Mono",monospace}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--ff-body);min-height:100vh;display:grid;place-items:center;padding:24px;
+    background-image:radial-gradient(720px 340px at 80% -10%,rgba(232,163,23,.14),transparent 60%),radial-gradient(560px 300px at 5% 110%,rgba(14,124,107,.1),transparent 62%)}
+  a{color:inherit;text-decoration:none}
+  .card{width:100%;max-width:400px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:34px 30px;box-shadow:0 30px 70px -34px rgba(22,19,15,.4)}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--ff-disp);font-weight:700;font-size:21px;justify-content:center;margin-bottom:6px}
+  .brand .dot{width:12px;height:12px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 4px rgba(232,163,23,.18)}
+  h1{font-family:var(--ff-disp);font-weight:600;font-size:22px;text-align:center;margin-top:14px}
+  .sub{text-align:center;color:var(--muted);font-size:14px;margin:6px 0 22px}
+  label{font-family:var(--ff-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  input{width:100%;margin-top:6px;padding:13px 14px;border:1.5px solid var(--line2);border-radius:11px;font-family:var(--ff-body);font-size:15px;background:var(--paper);outline:none}
+  input:focus{border-color:var(--amber);background:#fff}
+  .btn{width:100%;margin-top:14px;padding:13px;border:0;border-radius:11px;font-family:var(--ff-disp);font-weight:600;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:transform .12s,background .2s}
+  .btn.primary{background:var(--ink);color:var(--paper)}.btn.primary:hover{transform:translateY(-1px)}
+  .btn.google{background:#fff;border:1.5px solid var(--line2);color:var(--ink);margin-top:10px}.btn.google:hover{border-color:var(--ink)}
+  .divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--muted);font-size:12px}
+  .divider:before,.divider:after{content:"";height:1px;background:var(--line);flex:1}
+  .msg{margin-top:14px;padding:11px 13px;border-radius:10px;font-size:13.5px;display:none}
+  .msg.ok{background:#f3faf4;border:1px solid #cce8d2;color:var(--teal);display:block}
+  .msg.err{background:#fcf1ee;border:1px solid #f0cfc6;color:#b23b2e;display:block}
+  .foot{text-align:center;margin-top:20px;font-size:13px;color:var(--muted)}
+  .back{display:block;text-align:center;margin-top:18px;font-size:13px;color:var(--muted)}
+  .back:hover{color:var(--amber-d)}
+</style>
+</head>
+<body>
+  <div class="card">
+    <a class="brand" href="/"><span class="dot"></span>Oversight</a>
+    <h1>Unlock your full report</h1>
+    <p class="sub">Free account — every finding, scan history &amp; monitoring.</p>
+
+    <div id="form">
+      <label for="email">Email</label>
+      <input id="email" type="email" inputmode="email" placeholder="you@company.com" autocomplete="email" />
+      <button class="btn primary" id="magic" onclick="magic()">Email me a sign-in link</button>
+      <div class="divider">or</div>
+      <button class="btn google" onclick="google()">
+        <svg width="17" height="17" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.5 2.5 30.1 0 24 0 14.6 0 6.4 5.4 2.5 13.3l7.8 6c1.9-5.6 7-9.8 13.7-9.8z"/><path fill="#4285F4" d="M46.1 24.6c0-1.6-.1-3.1-.4-4.6H24v9.1h12.4c-.5 2.9-2.1 5.4-4.6 7l7.1 5.5c4.2-3.9 6.6-9.6 6.6-16z"/><path fill="#FBBC05" d="M10.3 28.3c-.5-1.4-.7-2.8-.7-4.3s.3-2.9.7-4.3l-7.8-6C.9 16.9 0 20.3 0 24s.9 7.1 2.5 10.3l7.8-6z"/><path fill="#34A853" d="M24 48c6.1 0 11.3-2 15-5.5l-7.1-5.5c-2 1.3-4.6 2.1-7.9 2.1-6.7 0-12.4-4.5-14.4-10.6l-7.8 6C6.4 42.6 14.6 48 24 48z"/></svg>
+        Continue with Google
+      </button>
+    </div>
+
+    <div class="msg" id="msg"></div>
+    <a class="back" href="/">← back to site</a>
+  </div>
+
+<script src="/auth.js"></script>
+<script>
+  const msg=(t,ok)=>{const m=document.getElementById('msg');m.className='msg '+(ok?'ok':'err');m.textContent=t;};
+  // already signed in? go to dashboard
+  OVS.me().then(u=>{ if(u) location.href='/dashboard.html'; });
+  async function magic(){
+    const email=document.getElementById('email').value.trim();
+    if(!email || email.indexOf('@')<0){ msg('Enter a valid email.',false); return; }
+    const b=document.getElementById('magic'); b.disabled=true; b.textContent='Sending…';
+    try{ await OVS.sendMagicLink(email); msg('Check your inbox — we sent a sign-in link to '+email+'.',true); }
+    catch(e){ msg(e.message||'Could not send link.',false); }
+    finally{ b.disabled=false; b.textContent='Email me a sign-in link'; }
+  }
+  async function google(){ try{ await OVS.googleSignIn(); }catch(e){ msg(e.message,false);} }
+  document.getElementById('email').addEventListener('keydown',e=>{if(e.key==='Enter')magic();});
+</script>
+</body>
+</html>
