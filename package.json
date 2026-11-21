@@ -1,6 +1,9 @@
 {
   "name": "oversight-ai",
   "version": "1.0.0",
-  "private": true,
-  "type": "module"
+  "description": "Open-source AI-agent site scanner: AEO/SEO, accessibility, security, social.",
+  "license": "AGPL-3.0",
+  "private": false,
+  "type": "module",
+  "repository": { "type": "git", "url": "https://github.com/heyzaya59/oversight-ai" }
 }
