@@ -1,0 +1,4 @@
+{
+  "cleanUrls": true,
+  "functions": { "api/scan.js": { "maxDuration": 20 } }
+}

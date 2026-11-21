@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oversight — AI agents for your website. Every change approved by a human.</title>
+<meta name="description" content="Four AI agents keep your website found, accessible, secure, and sharp — content, AEO/SEO, accessibility, and security. Nothing goes live without a human approving it. Run a free scan in seconds." />
+<meta name="theme-color" content="#16130F" />
+<meta property="og:title" content="Oversight — AI agents for your website" />
+<meta property="og:description" content="Content, AEO/SEO, accessibility and security agents that do real work — with a human approving every change. Run a free scan." />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="canonical" href="https://oversight.ai/" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Organization","name":"Oversight","url":"https://oversight.ai","description":"Human-approved AI agents for websites: content, AEO/SEO, accessibility and security.","sameAs":[]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do the AI agents change my site without me?","acceptedAnswer":{"@type":"Answer","text":"No. Every agent proposes work, but nothing customer-facing ships until a human approves it. Human-in-the-loop is the product, not a setting."}},{"@type":"Question","name":"What do the four agents do?","acceptedAnswer":{"@type":"Answer","text":"Content/Experience, AEO/SEO, Accessibility (WCAG 2.2), and Security. They run continuously and surface changes for your approval."}}]}
+</script>
+<style>
+  :root{
+    --paper:#F7F5F0; --paper2:#EFEBE1; --ink:#16130F; --ink2:#2A251E;
+    --muted:#6B6559; --line:#E3DECF; --line2:#D6CFBD;
+    --amber:#E8A317; --amber-d:#C8860A; --teal:#0E7C6B; --teal-d:#0A5F52;
+    --rad:14px; --maxw:1140px;
+    --ff-disp:"Space Grotesk",system-ui,sans-serif;
+    --ff-body:"Inter",system-ui,sans-serif;
+    --ff-mono:"Space Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:var(--ff-body);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3{font-family:var(--ff-disp);font-weight:600;letter-spacing:-.02em;line-height:1.05}
+  .mono{font-family:var(--ff-mono)}
+  .eyebrow{font-family:var(--ff-mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber-d)}
+
+  /* ---- nav ---- */
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(247,245,240,.82);backdrop-filter:saturate(160%) blur(12px);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;gap:28px;height:66px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--ff-disp);font-weight:700;font-size:20px;letter-spacing:-.03em}
+  .brand .dot{width:12px;height:12px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 4px rgba(232,163,23,.18);animation:pulse 2.4s infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 4px rgba(232,163,23,.18)}50%{box-shadow:0 0 0 7px rgba(232,163,23,.05)}}
+  nav.links{display:flex;gap:26px;margin-left:8px;font-size:14.5px;font-weight:500}
+  nav.links a{color:var(--ink2);transition:color .15s}
+  nav.links a:hover{color:var(--amber-d)}
+  .nav-cta{margin-left:auto;display:flex;align-items:center;gap:14px}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--ff-disp);font-weight:600;font-size:15px;padding:11px 20px;border-radius:10px;border:1.5px solid transparent;cursor:pointer;transition:transform .12s,box-shadow .2s,background .2s;white-space:nowrap}
+  .btn.primary{background:var(--ink);color:var(--paper)}
+  .btn.primary:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(22,19,15,.22)}
+  .btn.ghost{background:transparent;border-color:var(--line2);color:var(--ink)}
+  .btn.ghost:hover{border-color:var(--ink);transform:translateY(-1px)}
+  .btn.amber{background:var(--amber);color:var(--ink)}
+  .btn.amber:hover{background:var(--amber-d);transform:translateY(-1px)}
+
+  /* ---- hero ---- */
+  .hero{padding:72px 0 40px;position:relative}
+  .hero:before{content:"";position:absolute;inset:0;background:
+    radial-gradient(900px 380px at 78% -8%,rgba(232,163,23,.16),transparent 60%),
+    radial-gradient(640px 320px at 8% 10%,rgba(14,124,107,.10),transparent 62%);pointer-events:none}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center;position:relative}
+  h1.title{font-size:clamp(38px,5.2vw,64px);font-weight:700}
+  .title .hl{color:var(--amber-d);position:relative;white-space:nowrap}
+  .lede{font-size:19px;color:var(--ink2);margin:22px 0 26px;max-width:30em}
+  .lede b{font-weight:600}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .trust{display:flex;gap:22px;margin-top:26px;font-size:13px;color:var(--muted)}
+  .trust span{display:flex;align-items:center;gap:7px}
+  .tick{color:var(--teal);font-weight:700}
+
+  /* ---- scanner console ---- */
+  .console{background:var(--ink);color:var(--paper);border-radius:18px;padding:22px;box-shadow:0 30px 70px -28px rgba(22,19,15,.55);border:1px solid #2c271f}
+  .console-top{display:flex;align-items:center;gap:8px;margin-bottom:16px}
+  .console-top .tl{width:11px;height:11px;border-radius:50%;background:#3a342b}
+  .console-top .lbl{margin-left:auto;font-family:var(--ff-mono);font-size:11px;letter-spacing:.14em;color:#8e8676;text-transform:uppercase}
+  .scanbar{display:flex;gap:8px;background:#211c16;border:1px solid #352f26;border-radius:11px;padding:7px 7px 7px 14px}
+  .scanbar input{flex:1;background:transparent;border:0;color:var(--paper);font-family:var(--ff-mono);font-size:15px;outline:none;min-width:0}
+  .scanbar input::placeholder{color:#7d7667}
+  .scanbar .btn{padding:10px 18px;font-size:14px}
+  .scan-hint{font-family:var(--ff-mono);font-size:11.5px;color:#8e8676;margin-top:10px}
+  .agents-rail{margin-top:18px;display:grid;gap:9px}
+  .arow{display:grid;grid-template-columns:22px 1fr auto;align-items:center;gap:12px;padding:12px 14px;background:#1d1812;border:1px solid #302a21;border-radius:11px}
+  .arow .ai{font-family:var(--ff-mono);font-size:12px;color:#8e8676}
+  .arow .an{font-family:var(--ff-disp);font-weight:500;font-size:15px}
+  .arow .an small{display:block;font-family:var(--ff-body);font-weight:400;font-size:12px;color:#9b9384;margin-top:1px}
+  .chip{font-family:var(--ff-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:7px;white-space:nowrap}
+  .chip.idle{background:#2a241c;color:#9b9384}
+  .chip.run{background:rgba(232,163,23,.16);color:var(--amber)}
+  .chip.done{background:rgba(14,124,107,.2);color:#4fd1b8}
+  .scorebig{font-family:var(--ff-disp);font-weight:700;font-size:20px;min-width:52px;text-align:right}
+  .scorebig .g{font-size:12px;color:#9b9384;margin-left:4px}
+  .overall{display:none;margin-top:14px;padding:14px 16px;border-radius:11px;background:linear-gradient(90deg,#211c16,#1d1812);border:1px solid #352f26;align-items:center;gap:14px}
+  .overall.show{display:flex}
+  .overall .num{font-family:var(--ff-disp);font-weight:700;font-size:34px;line-height:1}
+  .overall .meta{font-size:13px;color:#9b9384}
+  .err{color:#ff9b8a;font-family:var(--ff-mono);font-size:12.5px;margin-top:10px;display:none}
+
+  /* ---- section scaffolding ---- */
+  section{padding:84px 0}
+  .sec-head{max-width:40em;margin-bottom:46px}
+  .sec-head h2{font-size:clamp(28px,3.6vw,42px);margin:12px 0 14px}
+  .sec-head p{font-size:17px;color:var(--ink2)}
+
+  /* ---- agent cards ---- */
+  .agents{background:var(--paper2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .agrid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .acard{background:var(--paper);border:1px solid var(--line);border-radius:var(--rad);padding:26px;transition:transform .18s,box-shadow .18s,border-color .18s;position:relative;overflow:hidden}
+  .acard:hover{transform:translateY(-3px);box-shadow:0 18px 40px -22px rgba(22,19,15,.3);border-color:var(--line2)}
+  .acard .no{font-family:var(--ff-mono);font-size:12px;color:var(--amber-d);letter-spacing:.1em}
+  .acard h3{font-size:22px;margin:14px 0 8px}
+  .acard p{font-size:15px;color:var(--ink2);margin-bottom:14px}
+  .acard ul{list-style:none;display:grid;gap:7px}
+  .acard li{font-size:13.5px;color:var(--muted);padding-left:20px;position:relative}
+  .acard li:before{content:"→";position:absolute;left:0;color:var(--teal);font-weight:700}
+  .acard .ico{width:46px;height:46px;border-radius:11px;display:grid;place-items:center;font-size:22px;background:var(--ink);color:var(--amber)}
+
+  /* ---- how it works ---- */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;counter-reset:s}
+  .step{padding:26px;border:1px solid var(--line);border-radius:var(--rad);background:var(--paper);position:relative}
+  .step .n{font-family:var(--ff-mono);font-size:13px;color:var(--amber-d);letter-spacing:.1em}
+  .step h3{font-size:19px;margin:10px 0 8px}
+  .step p{font-size:14.5px;color:var(--ink2)}
+  .step.key{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .step.key h3{color:#fff}.step.key p{color:#c9c2b4}.step.key .n{color:var(--amber)}
+
+  /* ---- differentiators ---- */
+  .diffs{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .diff{padding:22px;border-left:3px solid var(--teal);background:var(--paper2);border-radius:0 var(--rad) var(--rad) 0}
+  .diff h3{font-size:17px;margin-bottom:7px}
+  .diff p{font-size:14px;color:var(--ink2)}
+
+  /* ---- pricing ---- */
+  .pricing{background:var(--ink);color:var(--paper)}
+  .pricing .sec-head h2{color:#fff}.pricing .sec-head p{color:#c9c2b4}
+  .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start}
+  .plan{background:#1d1812;border:1px solid #302a21;border-radius:16px;padding:28px}
+  .plan.feat{border-color:var(--amber);box-shadow:0 0 0 1px var(--amber),0 24px 60px -30px rgba(232,163,23,.4);position:relative}
+  .plan.feat .tagf{position:absolute;top:-11px;left:28px;background:var(--amber);color:var(--ink);font-family:var(--ff-mono);font-size:11px;letter-spacing:.1em;padding:4px 10px;border-radius:6px;text-transform:uppercase}
+  .plan .pn{font-family:var(--ff-disp);font-weight:600;font-size:20px}
+  .plan .pfor{font-size:13px;color:#9b9384;margin-bottom:16px}
+  .plan .price{font-family:var(--ff-disp);font-weight:700;font-size:40px;letter-spacing:-.03em}
+  .plan .price small{font-size:15px;color:#9b9384;font-weight:400}
+  .plan .setup{font-family:var(--ff-mono);font-size:12.5px;color:var(--amber);margin:6px 0 18px}
+  .plan ul{list-style:none;display:grid;gap:10px;margin-bottom:22px}
+  .plan li{font-size:14px;color:#d3ccbe;padding-left:24px;position:relative}
+  .plan li:before{content:"✓";position:absolute;left:0;color:#4fd1b8;font-weight:700}
+  .plan .btn{width:100%;justify-content:center}
+
+  /* ---- agencies strip ---- */
+  .agency{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+  .agency .box{background:var(--paper2);border:1px solid var(--line);border-radius:16px;padding:28px}
+  .agency .box .mono{font-size:12px;color:var(--amber-d);letter-spacing:.12em;text-transform:uppercase}
+  .kpi{display:flex;gap:30px;margin-top:18px}
+  .kpi b{font-family:var(--ff-disp);font-size:30px;display:block}
+  .kpi span{font-size:12.5px;color:var(--muted)}
+
+  /* ---- final cta ---- */
+  .finale{text-align:center;padding:96px 0}
+  .finale h2{font-size:clamp(30px,4vw,48px);max-width:16em;margin:0 auto 18px}
+  .finale p{font-size:18px;color:var(--ink2);margin-bottom:28px}
+
+  footer{background:var(--ink);color:#c9c2b4;padding:52px 0 34px;font-size:14px}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:28px;margin-bottom:34px}
+  footer h4{font-family:var(--ff-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8e8676;margin-bottom:14px}
+  footer a{display:block;color:#c9c2b4;padding:4px 0;transition:color .15s}
+  footer a:hover{color:var(--amber)}
+  .foot-brand .brand{color:#fff;margin-bottom:12px}
+  .foot-brand p{max-width:26em;color:#9b9384;font-size:13.5px}
+  .foot-bot{border-top:1px solid #302a21;padding-top:20px;display:flex;justify-content:space-between;color:#8e8676;font-size:12.5px;flex-wrap:wrap;gap:10px}
+
+  /* ---- responsive ---- */
+  @media(max-width:900px){
+    .hero-grid,.agency{grid-template-columns:1fr;gap:32px}
+    .agrid,.steps,.diffs,.pgrid{grid-template-columns:1fr}
+    nav.links{display:none}
+    .foot-grid{grid-template-columns:1fr 1fr}
+    .hero{padding:48px 0 20px}
+    section{padding:60px 0}
+  }
+  @media(max-width:520px){
+    .foot-grid{grid-template-columns:1fr}
+    .trust{flex-wrap:wrap;gap:12px}
+    .kpi{gap:20px}
+    .nav-cta .btn.ghost{display:none}
+  }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#"><span class="dot"></span>Oversight</a>
+    <nav class="links">
+      <a href="#agents">Agents</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#agencies">For agencies</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn ghost" href="#scan">Free scan</a>
+      <a class="btn primary" href="#pricing">Get started</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="scan">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Human-approved AI agents</div>
+      <h1 class="title">Four agents keep your site <span class="hl">found, accessible &amp; secure</span>.</h1>
+      <p class="lede">Oversight runs continuous AI agents across your website — content, AEO/SEO, accessibility and security. <b>Nothing customer-facing ships until a human approves it.</b></p>
+      <div class="hero-cta">
+        <a class="btn amber" href="#scanbar-input" onclick="document.getElementById('scanbar-input').focus()">Scan my site free →</a>
+        <a class="btn ghost" href="#how">See how it works</a>
+      </div>
+      <div class="trust">
+        <span><span class="tick">✓</span> No credit card</span>
+        <span><span class="tick">✓</span> Real audit in ~10s</span>
+        <span><span class="tick">✓</span> You own everything</span>
+      </div>
+    </div>
+
+    <!-- live scanner console -->
+    <div class="console">
+      <div class="console-top">
+        <span class="tl"></span><span class="tl"></span><span class="tl"></span>
+        <span class="lbl">oversight · live scan</span>
+      </div>
+      <div class="scanbar">
+        <input id="scanbar-input" type="url" inputmode="url" placeholder="yourwebsite.com" autocomplete="off" />
+        <button class="btn amber" id="scanbtn" onclick="runScan()">Scan</button>
+      </div>
+      <div class="scan-hint" id="scanhint">↑ enter any public URL — four agents audit it in real time</div>
+      <div class="err" id="scanerr"></div>
+      <div class="agents-rail" id="rail">
+        <div class="arow" data-agent="AEO / SEO"><span class="ai">01</span><span class="an">AEO / SEO agent<small>Found by Google &amp; AI answer engines</small></span><span class="chip idle">Idle</span></div>
+        <div class="arow" data-agent="Accessibility"><span class="ai">02</span><span class="an">Accessibility agent<small>WCAG 2.2 — reach every user, dodge lawsuits</small></span><span class="chip idle">Idle</span></div>
+        <div class="arow" data-agent="Security"><span class="ai">03</span><span class="an">Security agent<small>Headers, TLS &amp; exposure</small></span><span class="chip idle">Idle</span></div>
+        <div class="arow" data-agent="Social"><span class="ai">04</span><span class="an">Social agent<small>Share cards &amp; link previews</small></span><span class="chip idle">Idle</span></div>
+      </div>
+      <div class="overall" id="overall">
+        <div class="num" id="ovnum">–</div>
+        <div class="meta"><b id="ovgrade"></b> overall health<br><span id="ovurl"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENTS -->
+<section class="agents" id="agents">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">The team</div>
+      <h2>Four specialists. One subscription. Zero surprises.</h2>
+      <p>Each agent owns a domain of your site, works around the clock, and queues every change for a human to approve before it goes live.</p>
+    </div>
+    <div class="agrid">
+      <div class="acard"><div class="ico">✍️</div><div class="no">01 · EXPERIENCE</div><h3>Content &amp; Experience</h3><p>Writes and refreshes pages in your brand voice, tightens CTAs, and keeps layouts clean and responsive.</p><ul><li>On-brand copy &amp; landing pages</li><li>CTA &amp; conversion polish</li><li>Responsive layout fixes</li></ul></div>
+      <div class="acard"><div class="ico">🔎</div><div class="no">02 · DISCOVERY</div><h3>AEO / SEO</h3><p>Optimizes for Google <em>and</em> AI answer engines with structured data so you get cited, not skipped.</p><ul><li>schema.org / JSON-LD markup</li><li>FAQ &amp; HowTo for AI Overviews</li><li>Metadata, canonicals, llms.txt</li></ul></div>
+      <div class="acard"><div class="ico">♿</div><div class="no">03 · INCLUSION</div><h3>Accessibility</h3><p>Continuous WCAG 2.2 audits with real fixes — not an overlay widget — so every visitor gets in and you stay out of court.</p><ul><li>Keyboard &amp; screen-reader checks</li><li>Alt text, labels, contrast</li><li>VPAT-ready reporting</li></ul></div>
+      <div class="acard"><div class="ico">🛡️</div><div class="no">04 · DEFENSE</div><h3>Security</h3><p>Watches headers, TLS and exposure 24/7, flags vulnerabilities, and hardens your edge with clear alerts.</p><ul><li>Security-header &amp; TLS hardening</li><li>Vulnerability &amp; malware monitoring</li><li>Instant human-routed alerts</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">The loop</div>
+      <h2>Agents do the work. You keep the final say.</h2>
+      <p>Autonomy without accountability is how AI breaks brands. Oversight is built the opposite way.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="n">STEP 01</div><h3>Agents work continuously</h3><p>Your four agents scan, draft, and prepare changes against objectives you set together — never around you.</p></div>
+      <div class="step key"><div class="n">STEP 02</div><h3>A human reviews every change</h3><p>Each proposed change lands in a queue with a plain-English diff. Approve, edit, or reject in one click. This is the product — not a temporary guardrail.</p></div>
+      <div class="step"><div class="n">STEP 03</div><h3>Approved work ships</h3><p>Only what you greenlight goes live. Everything is logged, reversible, and yours to keep.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- DIFFERENTIATORS -->
+<section class="agents" id="why">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">Why Oversight</div><h2>What you actually get.</h2></div>
+    <div class="diffs">
+      <div class="diff"><h3>Real audits, shown live</h3><p>Our free scanners run genuine checks against your live site — see the findings yourself before you ever pay a cent.</p></div>
+      <div class="diff"><h3>Transparent &amp; owned by you</h3><p>No black box. You see every change, keep every asset, and can walk with everything we build. Cancel anytime on Starter.</p></div>
+      <div class="diff"><h3>Accessibility done right</h3><p>Real WCAG remediation, not a legally-risky overlay widget. VPAT-ready documentation included.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Pricing</div>
+      <h2>All four agents. Every plan.</h2>
+      <p>No feature-gating games. The difference is scale, not capability.</p>
+    </div>
+    <div class="pgrid">
+      <div class="plan">
+        <div class="pn">Starter</div>
+        <div class="pfor">For a single business site</div>
+        <div class="price">$950<small>/mo</small></div>
+        <div class="setup">+ $3,500 one-time setup</div>
+        <ul><li>All four agents</li><li>One website</li><li>Human-approval queue</li><li>Monthly health report</li><li>Cancel anytime</li></ul>
+        <a class="btn amber" href="#finale">Start free scan</a>
+      </div>
+      <div class="plan feat">
+        <span class="tagf">Most popular</span>
+        <div class="pn">Pro Suite</div>
+        <div class="pfor">For agencies &amp; multi-site</div>
+        <div class="price">$1,750<small>/mo</small></div>
+        <div class="setup">+ $12,000/yr license · up to 15 sites</div>
+        <ul><li>Everything in Starter</li><li>Up to 15 domains &amp; seats</li><li>White-label &amp; client reporting</li><li>Priority alert routing</li><li>Dedicated onboarding</li></ul>
+        <a class="btn amber" href="#finale">Talk to us</a>
+      </div>
+      <div class="plan">
+        <div class="pn">Enterprise</div>
+        <div class="pfor">Custom scale &amp; compliance</div>
+        <div class="price">Custom</div>
+        <div class="setup">Dedicated engineer + custom agents</div>
+        <ul><li>Everything in Pro Suite</li><li>Custom &amp; proprietary agents</li><li>SSO, audit logs, SLAs</li><li>API / MCP / webhook integration</li><li>Security &amp; data agreements</li></ul>
+        <a class="btn ghost" href="#finale" style="border-color:#4a443a;color:#fff">Contact sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AGENCIES -->
+<section id="agencies">
+  <div class="wrap agency">
+    <div>
+      <div class="eyebrow">For agencies</div>
+      <h2 style="font-size:clamp(26px,3.4vw,38px);margin:12px 0 14px">Resell four agents under your own brand.</h2>
+      <p style="font-size:17px;color:var(--ink2)">Run Oversight across your whole client book from one console. White-label the reports, keep the margin, let the agents do the grind — with your team approving every change.</p>
+      <div class="kpi">
+        <div><b>15</b><span>sites &amp; seats on Pro</span></div>
+        <div><b>4</b><span>agents per client</span></div>
+        <div><b>100%</b><span>white-label</span></div>
+      </div>
+    </div>
+    <div class="box">
+      <div class="mono">// client console</div>
+      <div class="agents-rail" style="margin-top:14px">
+        <div class="arow" style="background:#fff;border-color:var(--line)"><span class="ai" style="color:var(--amber-d)">AC</span><span class="an" style="color:var(--ink)">acme-dental.com<small style="color:var(--muted)">3 changes awaiting approval</small></span><span class="chip run" style="background:rgba(232,163,23,.16);color:var(--amber-d)">Review</span></div>
+        <div class="arow" style="background:#fff;border-color:var(--line)"><span class="ai" style="color:var(--amber-d)">RV</span><span class="an" style="color:var(--ink)">rivera-law.com<small style="color:var(--muted)">All agents green</small></span><span class="chip done" style="background:rgba(14,124,107,.16);color:var(--teal-d)">Healthy</span></div>
+        <div class="arow" style="background:#fff;border-color:var(--line)"><span class="ai" style="color:var(--amber-d)">BL</span><span class="an" style="color:var(--ink)">blumenshop.com<small style="color:var(--muted)">Security agent flagged 1 item</small></span><span class="chip run" style="background:rgba(232,163,23,.16);color:var(--amber-d)">Alert</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINALE -->
+<section class="finale" id="finale">
+  <div class="wrap">
+    <div class="eyebrow">Start in 10 seconds</div>
+    <h2>See what four agents find on your site — free.</h2>
+    <p>No signup. Real findings. Keep the report either way.</p>
+    <a class="btn primary" href="#scanbar-input" onclick="document.getElementById('scanbar-input').focus();window.scrollTo({top:0,behavior:'smooth'})" style="font-size:17px;padding:15px 30px">Run my free scan →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="brand"><span class="dot"></span>Oversight</div>
+        <p>Human-approved AI agents for your website. Content, discovery, accessibility and security — with a person in the loop on every change.</p>
+      </div>
+      <div><h4>Agents</h4><a href="#agents">Content &amp; Experience</a><a href="#agents">AEO / SEO</a><a href="#agents">Accessibility</a><a href="#agents">Security</a></div>
+      <div><h4>Product</h4><a href="#pricing">Pricing</a><a href="#agencies">For agencies</a><a href="#scan">Free scanners</a><a href="#how">How it works</a></div>
+      <div><h4>Company</h4><a href="#">About</a><a href="#">Mission &amp; moral code</a><a href="#">Careers</a><a href="#">Contact</a></div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 Oversight. You own everything we build.</span>
+      <span class="mono">Privacy · Terms · Accessibility Statement · VPAT</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const RAIL = document.getElementById('rail');
+function setChip(agent, cls, text){
+  const row = RAIL.querySelector(`[data-agent="${agent}"]`);
+  if(!row) return;
+  let chip = row.querySelector('.chip');
+  chip.className = 'chip ' + cls;
+  chip.textContent = text;
+}
+function setScore(agent, score, grade){
+  const row = RAIL.querySelector(`[data-agent="${agent}"]`);
+  if(!row) return;
+  let chip = row.querySelector('.chip');
+  chip.className = 'chip done';
+  chip.innerHTML = `${score}<span style="opacity:.7;margin-left:3px">${grade}</span>`;
+}
+const AGENTS = ["AEO / SEO","Accessibility","Security","Social"];
+
+async function runScan(){
+  const raw = document.getElementById('scanbar-input').value;
+  const err = document.getElementById('scanerr');
+  const hint = document.getElementById('scanhint');
+  const btn = document.getElementById('scanbtn');
+  const overall = document.getElementById('overall');
+  err.style.display='none'; overall.classList.remove('show');
+  if(!raw || !raw.trim()){ err.textContent='↳ enter a website URL first'; err.style.display='block'; return; }
+  AGENTS.forEach((a,i)=> setTimeout(()=>setChip(a,'run','Scanning…'), i*180));
+  btn.disabled=true; btn.textContent='Scanning…'; hint.textContent='↳ agents dispatched — auditing live site…';
+  try{
+    const r = await fetch('/api/scan?url='+encodeURIComponent(raw.trim()));
+    const data = await r.json();
+    if(!r.ok || data.error){ throw new Error(data.error || 'Scan failed'); }
+    AGENTS.forEach((a,i)=>{
+      const res = data.agents[a];
+      setTimeout(()=> res ? setScore(a,res.score,res.grade) : setChip(a,'idle','n/a'), 250+i*220);
+    });
+    setTimeout(()=>{
+      document.getElementById('ovnum').textContent = data.overall;
+      document.getElementById('ovgrade').textContent = 'Grade '+data.overallGrade+' ·';
+      document.getElementById('ovurl').textContent = data.url.replace(/^https?:\/\//,'').replace(/\/$/,'') + ' · '+data.ms+'ms';
+      overall.classList.add('show');
+      hint.textContent='↳ scan complete — this is a preview. The full report fixes each item.';
+    }, 250+AGENTS.length*220);
+  }catch(e){
+    AGENTS.forEach(a=>setChip(a,'idle','Idle'));
+    err.textContent = '↳ '+(e.message||'could not scan that URL');
+    err.style.display='block'; hint.textContent='↑ enter any public URL — four agents audit it in real time';
+  }finally{
+    setTimeout(()=>{ btn.disabled=false; btn.textContent='Scan'; }, 250+AGENTS.length*220);
+  }
+}
+document.getElementById('scanbar-input').addEventListener('keydown',e=>{ if(e.key==='Enter') runScan(); });
+</script>
+</body>
+</html>
